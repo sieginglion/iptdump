@@ -3,19 +3,18 @@ name = "iptdump"
 version = "0.1.0"
 description = "trace iptables rules with ease"
 authors = ["sieginglion <sieginglion@gmail.com>"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.6.3"
+rich = "^12.6.0"
 typer = "^0.9.0"
-loguru = "^0.7.0"
 
-
-[tool.poetry.group.dev.dependencies]
-black = "^23.3.0"
-flake8 = "^6.0.0"
-ipython = "^8.14.0"
+[tool.poetry.dev-dependencies]
+black = "^22.8.0"
+flake8 = "^5.0.4"
+ipython = "^7.16.3"
+isort = "^5.10.1"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
