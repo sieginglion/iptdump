@@ -1,7 +1,7 @@
 import re
 import subprocess
 import sys
-from dataclasses import dataclass, field, fields
+from dataclasses import asdict, dataclass, field, fields
 from signal import SIGINT, signal
 from types import FrameType
 from typing import Union
@@ -30,7 +30,7 @@ def clear_traces(signum: Union[int, None] = None, frame: Union[FrameType, None] 
         sys.exit()
 
 
-def add_traces(match_rule: str):
+def set_traces(match_rule: str):
     for chain in ['PREROUTING', 'OUTPUT']:
         run_cmd(f'iptables -t raw -I {chain} 1 {match_rule} -j TRACE')
 
@@ -42,11 +42,13 @@ class Trace:
     SRC: str
     DST: str
     PROTO: str
-    REF: str = field(repr=False)
+    SPT: str
+    DPT: str
+    REF: str
     RULE: str = field(init=False)
 
     def __post_init__(self):
-        table, chain, _, index = self.REF.split(':')
+        table, chain, index = self.REF.split(':')
         r = run_cmd(f'iptables -t {table} -nL {chain} {index}')
         self.RULE = re.sub(r'\s+', ' ', r.stdout.decode().strip())  # type: ignore
 
@@ -54,15 +56,15 @@ class Trace:
 def parse_log(log: str):
     T = re.split(r'\s+', log)
     K = [f.name for f in fields(Trace)]
-    D: dict[str, str] = {}
+    D = {'SPT': '', 'DPT': ''}
     for t in T:
         if '=' in t:
             k, v = t.split('=')
             if k in K:
                 D[k] = v
         elif 'rule:' in t:
-            D['REF'] = t
-    return Trace(**D)
+            D['REF'] = t.replace('rule:', '')
+    return asdict(Trace(**D))
 
 
 def poll_then_log():
@@ -84,5 +86,5 @@ def main(
 ):
     signal(SIGINT, clear_traces)
     clear_traces()
-    add_traces(match_rule)
+    set_traces(match_rule)
     poll_then_log()
