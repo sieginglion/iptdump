@@ -1,8 +1,9 @@
 [tool.poetry]
-name = "iptdump"
-version = "0.1.0"
+name = "ipttrace"
+version = "0.1.1"
 description = "trace iptables rules with ease"
 authors = ["sieginglion <sieginglion@gmail.com>"]
+repository = "https://github.com/sieginglion/ipttrace"
 
 [tool.poetry.dependencies]
 python = "^3.6.3"
@@ -18,7 +19,7 @@ isort = "^5.10.1"
 types-dataclasses = "^0.6.6"
 
 [tool.poetry.scripts]
-iptdump = "iptdump.main:app"
+ipttrace = "ipttrace.main:app"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
