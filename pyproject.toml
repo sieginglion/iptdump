@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "ipttrace"
-version = "0.2.1"
-description = "trace iptables rules with ease"
+version = "0.2.5"
+description = "A CLI Helps You Trace Iptables Rules at Ease"
 authors = ["sieginglion <sieginglion@gmail.com>"]
 repository = "https://github.com/sieginglion/ipttrace"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.6.3"
